@@ -1,22 +1,25 @@
-import React from "react";
 import logo from "../assets/unsplash_rDEOVtE7vOs.png";
+const TableRow = ({ item, column }) => (
+  <tr>
+    {column.map((colItem, index) => {
+      if (colItem.value.includes(".")) {
 
-const TableRow = ({value}) => {
-    // console.log(value);
-  return (
-    <tr>
-      {/* <td>
-        <div className="name">
-          <img src={logo} alt="" />
-          <span>{value.name}</span>
-        </div>
-      </td>
-      <td>{value}</td>
-      <td><a href="">{value}</a></td>
-      <td>{value}</td>
-      <td>{value}</td> */}
-    </tr>
-  );
-};
+        const itemSplit = colItem.value.split(".");
+        return (
+          <td key={index}>
+            <div>
+              <img src={logo} alt="" />
+              {item[itemSplit[0]][itemSplit[1]]}
+            </div>
+          </td>
+        );
+      }
 
+      return (
+        <td key={index}>{item[`${colItem.value}`].includes('.com') ? <a>{item[`${colItem.value}`]}</a>:<>{item[`${colItem.value}`]}</>}</td>
+        
+      )
+    })}
+  </tr>
+);
 export default TableRow;

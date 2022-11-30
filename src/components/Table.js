@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Table.css";
-import arrow from "../assets/ArrowsDownUp.png";
+import TableHeading from "./TableHeading";
 import TableRow from "./TableRow";
-import logo from '../assets/unsplash_rDEOVtE7vOs.png'
 
-const Table = ({ tableData, colNames }) => {
+const Table2 = ({ tableData, colNames,sort,loading }) => {
 
     const [sortedList,setSortedList] = useState(tableData)
     const [sortCol,setSortCol] = useState();
     const [sortAsc,setSortAsc] = useState(true);
-    console.log(sortedList);
 
     const handleSortByColumn = colName => {
-
         let tempSortedList = [...tableData];
         let newSortedDir = !sortAsc;
 
@@ -51,51 +48,24 @@ const Table = ({ tableData, colNames }) => {
         setSortedList(tempSortedList)
     }
 
-
-
-  // .map(data => console.log(data))
   return (
     <div>
-      {tableData?.length > 0 && (
-        <table id="customers">
-          <thead>
-            <tr>
-              {colNames.map((headerItem, index) => (
-                <td key={index}>
-                  <div>
-                    <span>{headerItem}</span> <img onClick={()=> handleSortByColumn(headerItem.toLowerCase())} src={arrow} alt="" />
-                  </div>
-                </td>
-              ))}
-            </tr>
-          </thead>
-
-          <tbody>
-            {Object.values(sortedList).map((obj, index) => (
-              <tr key={index}>
-                {Object.values(obj).map((value, index2) => (
-                  <td key={index2}>
-                    {typeof value === "object"
-                      ? <span className="name">
-                        {
-                            Object.values(value)
-                            .reverse()
-                            .map((v, i) => 
-                            <span key={i}>
-                              {v.includes(".jpg")? <img src={logo} alt=""></img> : v}
-                          </span>)
-                        }
-                      </span>
-                      : value}
-                  </td>
-                ))}
-              </tr>
+      <table id="customers">
+        <thead>
+          <tr>
+            {colNames.map((item, index) => (
+              <TableHeading key={index} item={item} handleSortByColumn={handleSortByColumn} sort={sort} loading={loading}></TableHeading>
             ))}
-          </tbody>
-        </table>
-      )}
+          </tr>
+        </thead>
+        <tbody>
+          {sortedList?.map((item, index) => (
+            <TableRow key={index} item={item} column={colNames} sortedList={sortedList}></TableRow>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
 
-export default Table;
+export default Table2;
